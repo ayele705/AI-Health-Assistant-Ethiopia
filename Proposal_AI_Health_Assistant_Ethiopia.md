@@ -6,15 +6,24 @@ AI-Based Health Assistant for Improving Healthcare Access in Rural Ethiopia
 ---
 
 **Submitted By**
-[Student Name]
-[Student ID]
-[Department / Program]
-[Institution Name]
-[Date]
+
+| No. | Full Name | Student ID |
+|-----|-----------|------------|
+| 1 | AYELE MOGES | GUR/01091/16 |
+| 2 | BIRIHANEKULU TAFERE | GUR/01115/16 |
+| 3 | AMARE MINAYEHU | GUR/22885/16 |
+| 4 | BEZAWIT DESALEGN | GUR/01199/16 |
+| 5 | TIGIST MARKOS | GUR/00475/16 |
+
+**Department / Program:** Computer Science  
+**Institution:** University of Gondar  
+**Date:** May 2026
 
 **Submitted To**
-[Instructor Name]
-[Course Name / Code]
+
+**Instructor:** Melsew Belachew  
+**Course:** Artificial Intelligence  
+**Course Code:** INSC 3112
 
 ---
 
@@ -220,4 +229,4 @@ A three-tier client-server architecture:
 
 ---
 
-*Proposal submitted for academic review — [Institution Name], [Year]*
+*Proposal submitted for academic review — University of Gondar, 2026*

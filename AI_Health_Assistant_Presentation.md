@@ -9,7 +9,7 @@
 ## Improving Healthcare Access in Rural Ethiopia
 
 **Presented by:** Ayele Moges
-**Institution:** [Institution Name]
+**Institution:** University of Gondar
 **Date:** May 2026
 
 ---
