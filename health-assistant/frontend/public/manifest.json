@@ -1,0 +1,29 @@
+{
+  "short_name": "Health Assistant",
+  "name": "AI Health Assistant — Ethiopia",
+  "description": "Offline-capable health assistant for rural Ethiopian communities",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f0f4f0",
+  "theme_color": "#1a7a4a",
+  "lang": "en",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/logo192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["health", "medical"],
+  "screenshots": [],
+  "prefer_related_applications": false
+}

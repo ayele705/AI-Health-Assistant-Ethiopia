@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1a7a4a" />
+    <meta name="description" content="Offline-capable AI health assistant for rural Ethiopian communities" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Health Assistant" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/logo192.png" />
+    <title>AI Health Assistant — Ethiopia</title>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f4f0; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      // Register Service Worker for offline PWA support
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker
+            .register('/sw.js', { scope: '/' })
+            .then(function (reg) {
+              console.log('[PWA] Service Worker registered. Scope:', reg.scope);
+
+              // Notify app when a new SW version is waiting
+              reg.addEventListener('updatefound', function () {
+                var newWorker = reg.installing;
+                newWorker.addEventListener('statechange', function () {
+                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    // New content available — dispatch event for the app to show update banner
+                    window.dispatchEvent(new CustomEvent('sw-update-available'));
+                  }
+                });
+              });
+            })
+            .catch(function (err) {
+              console.warn('[PWA] Service Worker registration failed:', err);
+            });
+
+          // Listen for SW messages (e.g. TRIGGER_SYNC from background sync)
+          navigator.serviceWorker.addEventListener('message', function (event) {
+            window.dispatchEvent(new CustomEvent('sw-message', { detail: event.data }));
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

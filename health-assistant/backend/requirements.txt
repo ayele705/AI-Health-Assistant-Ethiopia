@@ -1,0 +1,11 @@
+django==4.2.7
+djangorestframework==3.14.0
+django-cors-headers==4.3.1
+python-dotenv==1.0.0
+python-dateutil==2.9.0
+africastalking==1.2.7
+APScheduler==3.10.4
+SpeechRecognition==3.10.4
+requests==2.31.0
+# Google Cloud Translation API client (optional — REST calls via requests also work)
+google-cloud-translate==3.15.3

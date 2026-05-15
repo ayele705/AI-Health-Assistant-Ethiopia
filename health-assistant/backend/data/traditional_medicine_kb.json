@@ -1,0 +1,439 @@
+{
+  "remedies": [
+    {
+      "id": "trad_001",
+      "local_names": {
+        "am": "ጥቁር አዝሙድ",
+        "om": "Qamadi gurraacha",
+        "en": "Black cumin"
+      },
+      "common_use_en": "Respiratory infections, digestive issues",
+      "common_use_am": "የመተንፈሻ ኢንፌክሽን",
+      "active_compounds": "Thymoquinone, carvacrol",
+      "safety_notes_en": "Generally safe in food amounts; avoid high doses in pregnancy",
+      "safety_notes_am": "በምግብ መጠን ደህና ነው",
+      "known_interactions": [
+        "warfarin",
+        "metformin"
+      ],
+      "serious_adverse_effect": false,
+      "evidence_level": "documented"
+    },
+    {
+      "id": "trad_002",
+      "local_names": {
+        "am": "ዝንጅብል",
+        "om": "Zinjibila",
+        "en": "Ginger"
+      },
+      "common_use_en": "Nausea, vomiting, colds",
+      "common_use_am": "ማቅለሽለሽ፣ ትውከት",
+      "active_compounds": "Gingerols, shogaols",
+      "safety_notes_en": "Safe in moderate amounts; may increase bleeding risk",
+      "safety_notes_am": "በመጠነኛ መጠን ደህና ነው",
+      "known_interactions": [
+        "warfarin",
+        "aspirin"
+      ],
+      "serious_adverse_effect": false,
+      "evidence_level": "documented"
+    },
+    {
+      "id": "trad_003",
+      "local_names": {
+        "am": "ቱርሜሪክ",
+        "om": "Turmeric",
+        "en": "Turmeric"
+      },
+      "common_use_en": "Anti-inflammatory, wound healing",
+      "common_use_am": "ፀረ-ብግርግር",
+      "active_compounds": "Curcumin",
+      "safety_notes_en": "Safe in food amounts; high doses may affect liver",
+      "safety_notes_am": "ከፍተኛ መጠን ጉበትን ሊጎዳ ይችላል",
+      "known_interactions": [
+        "blood_thinners"
+      ],
+      "serious_adverse_effect": false,
+      "evidence_level": "documented"
+    },
+    {
+      "id": "trad_004",
+      "local_names": {
+        "am": "ሎሚ",
+        "om": "Liimoo",
+        "en": "Lemon"
+      },
+      "common_use_en": "Vitamin C, colds, fever",
+      "common_use_am": "ቫይታሚን ሲ፣ ጉንፋን",
+      "active_compounds": "Vitamin C, citric acid",
+      "safety_notes_en": "Safe; excessive amounts may cause tooth erosion",
+      "safety_notes_am": "ደህና ነው",
+      "known_interactions": [],
+      "serious_adverse_effect": false,
+      "evidence_level": "documented"
+    },
+    {
+      "id": "trad_005",
+      "local_names": {
+        "am": "ቅቤ",
+        "om": "Dhadhaa",
+        "en": "Butter/Ghee"
+      },
+      "common_use_en": "Wound dressing, skin conditions",
+      "common_use_am": "የቁስል ሽፋን",
+      "active_compounds": "Saturated fats, vitamins A and D",
+      "safety_notes_en": "Use sparingly on wounds; may trap bacteria if wound is infected",
+      "safety_notes_am": "ኢንፌክሽን ካለ ባክቴሪያ ሊያጠምድ ይችላል",
+      "known_interactions": [],
+      "serious_adverse_effect": false,
+      "evidence_level": "traditional"
+    },
+    {
+      "id": "trad_006",
+      "local_names": {
+        "am": "ዕጣን",
+        "om": "Uunsi",
+        "en": "Frankincense"
+      },
+      "common_use_en": "Respiratory conditions, spiritual healing",
+      "common_use_am": "የመተንፈሻ ሁኔታዎች",
+      "active_compounds": "Boswellic acids",
+      "safety_notes_en": "Generally safe as incense; do not ingest large amounts",
+      "safety_notes_am": "እንደ ዕጣን ደህና ነው",
+      "known_interactions": [],
+      "serious_adverse_effect": false,
+      "evidence_level": "traditional"
+    },
+    {
+      "id": "trad_007",
+      "local_names": {
+        "am": "ሽንኩርት",
+        "om": "Qullubbii",
+        "en": "Onion"
+      },
+      "common_use_en": "Coughs, ear infections, wound healing",
+      "common_use_am": "ሳል፣ የጆሮ ኢንፌክሽን",
+      "active_compounds": "Quercetin, allicin",
+      "safety_notes_en": "Safe in food amounts; raw onion juice in ears not recommended",
+      "safety_notes_am": "ጥሬ ሽንኩርት ጭማቂ ጆሮ ውስጥ አይመከርም",
+      "known_interactions": [
+        "blood_thinners"
+      ],
+      "serious_adverse_effect": false,
+      "evidence_level": "traditional"
+    },
+    {
+      "id": "trad_008",
+      "local_names": {
+        "am": "ነጭ ሽንኩርት",
+        "om": "Qullubbii adii",
+        "en": "Garlic"
+      },
+      "common_use_en": "Infections, hypertension, immune support",
+      "common_use_am": "ኢንፌክሽን፣ ከፍተኛ ደም ግፊት",
+      "active_compounds": "Allicin, alliin",
+      "safety_notes_en": "Safe in food amounts; may increase bleeding risk with anticoagulants",
+      "safety_notes_am": "ከደም ማቀዝቀዣ ጋር የደም መፍሰስ አደጋ ሊጨምር ይችላል",
+      "known_interactions": [
+        "warfarin",
+        "aspirin",
+        "clopidogrel"
+      ],
+      "serious_adverse_effect": false,
+      "evidence_level": "documented"
+    },
+    {
+      "id": "trad_009",
+      "local_names": {
+        "am": "ቅጠላ ቅጠል",
+        "om": "Biqiltuu",
+        "en": "Eucalyptus leaves"
+      },
+      "common_use_en": "Respiratory infections, steam inhalation",
+      "common_use_am": "የመተንፈሻ ኢንፌክሽን",
+      "active_compounds": "Eucalyptol",
+      "safety_notes_en": "Safe for steam inhalation; do not ingest essential oil",
+      "safety_notes_am": "አስፈላጊ ዘይት አይዋጡ",
+      "known_interactions": [],
+      "serious_adverse_effect": false,
+      "evidence_level": "documented"
+    },
+    {
+      "id": "trad_010",
+      "local_names": {
+        "am": "ዘይቱና",
+        "om": "Zayitii",
+        "en": "Olive oil"
+      },
+      "common_use_en": "Skin moisturizer, ear wax removal",
+      "common_use_am": "የቆዳ ማርጠቢያ",
+      "active_compounds": "Oleic acid, polyphenols",
+      "safety_notes_en": "Safe for topical use; do not use in infected ears",
+      "safety_notes_am": "ኢንፌክሽን ባለው ጆሮ ውስጥ አይጠቀሙ",
+      "known_interactions": [],
+      "serious_adverse_effect": false,
+      "evidence_level": "documented"
+    },
+    {
+      "id": "trad_011",
+      "local_names": {
+        "am": "ሃሞ",
+        "om": "Hamoo",
+        "en": "Aloe vera"
+      },
+      "common_use_en": "Burns, skin conditions, constipation",
+      "common_use_am": "ቃጠሎ፣ ሆድ ድርቀት",
+      "active_compounds": "Aloin, acemannan",
+      "safety_notes_en": "Topical use safe; oral aloe latex can cause severe diarrhea",
+      "safety_notes_am": "የአሎ ላቴክስ ከባድ ተቅማጥ ሊያስከትል ይችላል",
+      "known_interactions": [
+        "diuretics",
+        "digoxin"
+      ],
+      "serious_adverse_effect": true,
+      "evidence_level": "documented"
+    },
+    {
+      "id": "trad_012",
+      "local_names": {
+        "am": "ቅዱስ ቅጠል",
+        "om": "Tulsi",
+        "en": "Holy basil"
+      },
+      "common_use_en": "Fever, coughs, stress relief",
+      "common_use_am": "ትኩሳት፣ ሳል",
+      "active_compounds": "Eugenol, ursolic acid",
+      "safety_notes_en": "Generally safe; may lower blood sugar",
+      "safety_notes_am": "የደም ስኳር ሊቀንስ ይችላል",
+      "known_interactions": [
+        "insulin",
+        "metformin"
+      ],
+      "serious_adverse_effect": false,
+      "evidence_level": "traditional"
+    },
+    {
+      "id": "trad_013",
+      "local_names": {
+        "am": "ሙዝ ቅጠል",
+        "om": "Muuzii",
+        "en": "Banana leaf"
+      },
+      "common_use_en": "Wound dressing, burns",
+      "common_use_am": "የቁስል ሽፋን",
+      "active_compounds": "Tannins, flavonoids",
+      "safety_notes_en": "Use clean leaves only; do not use on infected wounds",
+      "safety_notes_am": "ንጹህ ቅጠሎች ብቻ ይጠቀሙ",
+      "known_interactions": [],
+      "serious_adverse_effect": false,
+      "evidence_level": "traditional"
+    },
+    {
+      "id": "trad_014",
+      "local_names": {
+        "am": "ቀይ ሽንኩርት",
+        "om": "Qullubbii diimaa",
+        "en": "Red onion"
+      },
+      "common_use_en": "Malaria prevention, fever",
+      "common_use_am": "ወባ መከላከያ",
+      "active_compounds": "Quercetin, anthocyanins",
+      "safety_notes_en": "Safe in food amounts",
+      "safety_notes_am": "በምግብ መጠን ደህና ነው",
+      "known_interactions": [],
+      "serious_adverse_effect": false,
+      "evidence_level": "traditional"
+    },
+    {
+      "id": "trad_015",
+      "local_names": {
+        "am": "ፓፓያ ቅጠል",
+        "om": "Papaya leaves",
+        "en": "Papaya leaves"
+      },
+      "common_use_en": "Malaria, dengue fever, digestive issues",
+      "common_use_am": "ወባ፣ ዴንጊ ትኩሳት",
+      "active_compounds": "Papain, chymopapain",
+      "safety_notes_en": "May increase bleeding risk; avoid in pregnancy",
+      "safety_notes_am": "በእርግዝና ወቅት ያስወግዱ",
+      "known_interactions": [
+        "warfarin",
+        "aspirin"
+      ],
+      "serious_adverse_effect": true,
+      "evidence_level": "traditional"
+    },
+    {
+      "id": "trad_016",
+      "local_names": {
+        "am": "ሰናፍጭ",
+        "om": "Sinafichii",
+        "en": "Mustard seeds"
+      },
+      "common_use_en": "Respiratory conditions, joint pain",
+      "common_use_am": "የመተንፈሻ ሁኔታዎች",
+      "active_compounds": "Glucosinolates",
+      "safety_notes_en": "Safe in food amounts; topical paste may cause skin irritation",
+      "safety_notes_am": "ቅቤ ቆዳ ሊያቃጥል ይችላል",
+      "known_interactions": [],
+      "serious_adverse_effect": false,
+      "evidence_level": "traditional"
+    },
+    {
+      "id": "trad_017",
+      "local_names": {
+        "am": "ዕፀ ቅዱስ",
+        "om": "Moringa",
+        "en": "Moringa"
+      },
+      "common_use_en": "Malnutrition, anemia, lactation support",
+      "common_use_am": "የምግብ ዕጦት፣ ደም ማነስ",
+      "active_compounds": "Vitamins A, C, iron, calcium",
+      "safety_notes_en": "Generally safe; root bark may cause uterine contractions",
+      "safety_notes_am": "የሥር ቅርፊት የማህፀን ኮንትራክሽን ሊያስከትል ይችላል",
+      "known_interactions": [
+        "thyroid_medications"
+      ],
+      "serious_adverse_effect": false,
+      "evidence_level": "documented"
+    },
+    {
+      "id": "trad_018",
+      "local_names": {
+        "am": "ቅቤ ዘይት",
+        "om": "Zayitii dhadhaa",
+        "en": "Castor oil"
+      },
+      "common_use_en": "Constipation, labor induction",
+      "common_use_am": "ሆድ ድርቀት",
+      "active_compounds": "Ricinoleic acid",
+      "safety_notes_en": "Do not use to induce labor without medical supervision",
+      "safety_notes_am": "ያለ ሐኪም ክትትል ወሊድ ለማስጀመር አይጠቀሙ",
+      "known_interactions": [],
+      "serious_adverse_effect": true,
+      "evidence_level": "documented"
+    },
+    {
+      "id": "trad_019",
+      "local_names": {
+        "am": "ቅጠላ ቅጠል ሻይ",
+        "om": "Shaayii biqiltuu",
+        "en": "Herbal tea"
+      },
+      "common_use_en": "General wellness, relaxation",
+      "common_use_am": "አጠቃላይ ጤና",
+      "active_compounds": "Varies by herbs used",
+      "safety_notes_en": "Depends on specific herbs; some may interact with medications",
+      "safety_notes_am": "አንዳንዶቹ ከመድሃኒቶች ጋር ሊጋጩ ይችላሉ",
+      "known_interactions": [],
+      "serious_adverse_effect": false,
+      "evidence_level": "unverified"
+    },
+    {
+      "id": "trad_020",
+      "local_names": {
+        "am": "ዕፀ ሐሙስ",
+        "om": "Qoricha aadaa",
+        "en": "Gesho (Hops)"
+      },
+      "common_use_en": "Digestive aid, used in tej",
+      "common_use_am": "የምግብ መፈጨት ድጋፍ",
+      "active_compounds": "Humulone, lupulone",
+      "safety_notes_en": "Safe in food amounts; sedative effects in large doses",
+      "safety_notes_am": "ከፍተኛ መጠን ሰካራምነት ሊያስከትል ይችላል",
+      "known_interactions": [
+        "sedatives"
+      ],
+      "serious_adverse_effect": false,
+      "evidence_level": "traditional"
+    },
+    {
+      "id": "trad_021",
+      "local_names": {
+        "am": "ቅዱስ ዕፅ",
+        "om": "Qoricha qulqulluu",
+        "en": "Rue (Tena Adam)"
+      },
+      "common_use_en": "Menstrual regulation",
+      "common_use_am": "የወር አበባ ቁጥጥር",
+      "active_compounds": "Rutin, alkaloids",
+      "safety_notes_en": "DANGEROUS in pregnancy - can cause miscarriage. Do not use.",
+      "safety_notes_am": "በእርግዝና ወቅት አደገኛ ነው - ፅንስ ሊያስወርድ ይችላል",
+      "known_interactions": [
+        "anticoagulants"
+      ],
+      "serious_adverse_effect": true,
+      "evidence_level": "documented"
+    },
+    {
+      "id": "trad_022",
+      "local_names": {
+        "am": "ዕፀ ቅቤ",
+        "om": "Qoricha dhadhaa",
+        "en": "Shea butter"
+      },
+      "common_use_en": "Skin moisturizer, wound healing",
+      "common_use_am": "የቆዳ ማርጠቢያ",
+      "active_compounds": "Stearic acid, oleic acid",
+      "safety_notes_en": "Safe for topical use",
+      "safety_notes_am": "ለቆዳ ደህና ነው",
+      "known_interactions": [],
+      "serious_adverse_effect": false,
+      "evidence_level": "documented"
+    },
+    {
+      "id": "trad_023",
+      "local_names": {
+        "am": "ዝናብ ዘር",
+        "om": "Fenugreek",
+        "en": "Fenugreek"
+      },
+      "common_use_en": "Lactation support, diabetes management",
+      "common_use_am": "ጡት ማጥባት ድጋፍ",
+      "active_compounds": "Diosgenin, trigonelline",
+      "safety_notes_en": "May lower blood sugar; avoid in pregnancy",
+      "safety_notes_am": "በእርግዝና ወቅት ያስወግዱ",
+      "known_interactions": [
+        "insulin",
+        "metformin",
+        "warfarin"
+      ],
+      "serious_adverse_effect": false,
+      "evidence_level": "documented"
+    },
+    {
+      "id": "trad_024",
+      "local_names": {
+        "am": "ቅጠላ ቅጠል ዘይት",
+        "om": "Zayitii biqiltuu",
+        "en": "Neem"
+      },
+      "common_use_en": "Malaria prevention, skin infections",
+      "common_use_am": "ወባ መከላከያ",
+      "active_compounds": "Azadirachtin, nimbin",
+      "safety_notes_en": "Do not ingest neem oil - toxic. Leaves in small amounts may be safer.",
+      "safety_notes_am": "የኒም ዘይት አይዋጡ - መርዛማ ነው",
+      "known_interactions": [
+        "immunosuppressants"
+      ],
+      "serious_adverse_effect": true,
+      "evidence_level": "documented"
+    },
+    {
+      "id": "trad_025",
+      "local_names": {
+        "am": "ቅቤ ሻይ",
+        "om": "Shaayii dhadhaa",
+        "en": "Butter tea"
+      },
+      "common_use_en": "Energy, warmth, altitude sickness",
+      "common_use_am": "ኃይል፣ ሙቀት",
+      "active_compounds": "Saturated fats, caffeine",
+      "safety_notes_en": "High in saturated fat; limit in cardiovascular disease",
+      "safety_notes_am": "ከፍተኛ የሰባ ቅባት አለው",
+      "known_interactions": [],
+      "serious_adverse_effect": false,
+      "evidence_level": "traditional"
+    }
+  ]
+}
