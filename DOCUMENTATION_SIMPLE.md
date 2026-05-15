@@ -434,7 +434,7 @@ A: 81% accurate for top-3 predictions. Best for common diseases.
 ##  Academic Information
 
 **Course:** AI Course  
-**Academic Year:** 2025-2026  
+**Academic Year:** 2026  
 **Institution:** [Your University]  
 **Project Type:** Final Year Project
 

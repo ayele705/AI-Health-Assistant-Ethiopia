@@ -3,7 +3,7 @@ COMPREHENSIVE PROJECT DOCUMENTATION
 
 Version 1.0
 Date: May 2026
-Academic Year: 2025-2026
+Academic Year: 2026
 Course: Artificial Intelligence
 
 ================================================================================

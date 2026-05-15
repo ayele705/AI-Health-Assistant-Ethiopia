@@ -545,7 +545,7 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file for
 
 ##  Team
 
-**Academic Year 2025-2026 | AI Course Project**
+**Academic Year 2026 | AI Course Project**
 
 - Project Lead: [Your Name]
 - AI/ML Engineer: [Name]

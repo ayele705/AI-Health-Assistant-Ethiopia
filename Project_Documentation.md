@@ -3,7 +3,7 @@
 
 **Version:** 1.0  
 **Date:** May 2026  
-**Course:** AI Course - Academic Year 2025-2026
+**Course:** AI Course - Academic Year 2026
 
 ---
 
@@ -492,7 +492,7 @@ latitude=9.0250&longitude=38.7469&radius_km=20&type=health_center
 |---|---|
 | Base model | bert-base-multilingual-cased (mBERT) |
 | Fine-tuning dataset | 15,000 Amharic/English health queries |
-| Tasks | Intent classification + NER symptom extraction |
+| Tasks | Intent clasit sification + NER symptom extraction |
 | Library | Hugging Face Transformers 4.x |
 
 ### Intent Classes
@@ -734,4 +734,4 @@ curl https://yourdomain.com/api/v1/health
 ---
 
 *Documentation for: AI-Based Health Assistant for Improving Healthcare Access in Rural Ethiopia*
-*Academic Year 2025-2026 | AI Course Project*
+*Academic Year 2026 | AI Course Project*
