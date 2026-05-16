@@ -492,7 +492,7 @@ latitude=9.0250&longitude=38.7469&radius_km=20&type=health_center
 |---|---|
 | Base model | bert-base-multilingual-cased (mBERT) |
 | Fine-tuning dataset | 15,000 Amharic/English health queries |
-| Tasks | Intent clasit sification + NER symptom extraction |
+| Tasks | Intent classification + NER symptom extraction |
 | Library | Hugging Face Transformers 4.x |
 
 ### Intent Classes
@@ -617,7 +617,7 @@ JWT_EXPIRY_HOURS=24
 
 ### Startup Commands
 ```bash
-git clone https://github.com/your-org/health-assistant-ethiopia.git
+git clone https://github.com/ayele705/AI-Health-Assistant-Ethiopia.git
 cd health-assistant-ethiopia
 cp backend/.env.example backend/.env
 # Edit .env with your values

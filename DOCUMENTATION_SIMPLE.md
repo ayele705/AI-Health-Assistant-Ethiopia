@@ -312,7 +312,7 @@ App: "This could be malaria or flu.
 ### For Developers
 
 **Code Repository:**
-- GitHub: github.com/your-org/health-assistant
+- GitHub: github.com/ayele705/AI-Health-Assistant-Ethiopia
 
 **Documentation:**
 - API Docs: api.healthassistant.et/docs
@@ -435,17 +435,16 @@ A: 81% accurate for top-3 predictions. Best for common diseases.
 
 **Course:** AI Course  
 **Academic Year:** 2026  
-**Institution:** [Your University]  
+**Institution:** University of Gondar  
+**Department:** Information Science  
 **Project Type:** Final Year Project
 
 **Team:**
-- Project Lead: [Name]
-- AI Engineer: [Name]
-- Backend Developer: [Name]
-- Mobile Developer: [Name]
-- Health Advisor: [Name]
-
-**Supervisor:** [Professor Name]
+- Tigist Markos — GUR/00475/16
+- Yohannes Ayele — GUR/00705/16
+- Yohannes Hailu — GUR/00706/16
+- Yonas Getachew — GUR/00710/16
+- Yordanos Tesfaye — GUR/00714/16
 
 ---
 
@@ -468,7 +467,7 @@ This project is open source under MIT License.
 - Health Extension Workers who tested the app
 - Community members in Oromia who gave feedback
 - WHO Ethiopia Office
-- [Your University] AI Department
+- University of Gondar, Department of Information Science
 
 ---
 
