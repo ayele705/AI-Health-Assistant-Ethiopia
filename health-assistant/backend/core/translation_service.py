@@ -171,6 +171,8 @@ def translate(
     if cached:
         return cached
 
+    # 3 — Google Translate API
+    result = _call_google_translate(text, target_lang, source_lang)
     if result:
         _cache_set(text, target_lang, result)
         return result
