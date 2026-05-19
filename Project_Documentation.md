@@ -5,6 +5,17 @@
 **Date:** May 2026  
 **Course:** AI Course - Academic Year 2026
 
+### Group Members
+
+| # | Name | Student ID |
+|---|------|-----------|
+| 1 | Ayele Moges | GUR/01091/16 |
+| 2 | Birihanekulu Tafere | GUR/01115/16 |
+| 3 | Amare Minayehu | GUR/22885/16 |
+| 4 | Bezawit Desalegn | GUR/01199/16 |
+| 5 | Tigist Markos | GUR/00475/16 |
+| 6 | Yabsira Debebe | GUR/02880/16 |
+
 ---
 
 ## Table of Contents
@@ -40,7 +51,7 @@ accessible on Android smartphones and via USSD on feature phones.
 - Rural community members who lack access to nearby health facilities
 - Health Extension Workers (HEWs) who need decision-support tools for triage and referral
 
-The assistant supports Amharic and English, operates in low-bandwidth environments,
+The assistant supports English, Amharic, Oromo and Tigrinya, operates in low-bandwidth environments,
 and includes offline functionality for core features. It is not a diagnostic tool
 and does not replace professional medical care. It acts as a first-contact health
 information bridge.
@@ -130,7 +141,7 @@ When connectivity is restored, the app syncs with the server automatically.
 | ID | Requirement | Priority |
 |---|---|---|
 | FR-01 | User registration with name, age, sex, location, language preference | High |
-| FR-02 | Symptom input via text and voice in Amharic and English | High |
+| FR-02 | Symptom input via text and voice in English, Amharic, Oromo and Tigrinya | High |
 | FR-03 | Structured symptom interview through conversational interface | High |
 | FR-04 | Generate ranked list of possible conditions from symptoms | High |
 | FR-05 | Classify urgency: self-care / visit health center / emergency | High |
@@ -274,7 +285,7 @@ A curated repository of health information covering Ethiopia's primary disease b
 
 - **Format**: JSON documents stored in MongoDB
 - **Coverage**: 30+ common conditions including malaria, TB, diarrheal diseases, respiratory infections, maternal health, nutrition
-- **Languages**: Amharic and English for all content
+- **Languages**: English, Amharic, Oromo and Tigrinya for all content
 - **Sources**: WHO Primary Care Guidelines, Ethiopian Standard Treatment Guidelines, FMOH materials
 
 ### 8.4 Referral and Recommendation Engine
@@ -676,7 +687,7 @@ curl https://yourdomain.com/api/v1/health
 
 | Limitation | Impact | Mitigation |
 |---|---|---|
-| Amharic and English only | Excludes Oromo, Tigrinya, Somali speakers | Planned for v2 |
+| Amharic, English, Oromo, Tigrinya only | Excludes Somali, Sidama speakers | Planned for v2 |
 | NLP requires internet for full processing | Reduced accuracy offline | Rule-based fallback available offline |
 | No clinical RCT validation | Cannot claim clinical-grade accuracy | Clear disclaimers; information tool only |
 | Voice recognition degrades in noisy environments | Lower usability outdoors | Improved acoustic model planned |

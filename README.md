@@ -1,18 +1,8 @@
 # 🌿 AI-Based Health Assistant for Rural Ethiopia
 
-> An AI-powered conversational health assistant designed to improve healthcare access for rural communities in Ethiopia — supporting Amharic & English, working offline, and accessible on both smartphones and feature phones.
+> An AI-powered conversational health assistant designed to improve healthcare access for rural communities in Ethiopia — supporting English, Amharic, Oromo & Tigrinya, working offline, and accessible on both smartphones and feature phones.
 
 ---
-
-## 👥 Group Members
-
-| # | Name | Student ID |
-|---|------|-----------|
-| 1 | Ayele Moges | GUR/01091/16 |
-| 2 | Birihanekulu Tafere | GUR/01115/16 |
-| 3 | Amare Minayehu | GUR/22885/16 |
-| 4 | Bezawit Desalegn | GUR/01199/16 |
-| 5 | Tigist Markos | GUR/00475/16 |
 
 **Department:** Information Science  
 **Institution:** University of Gondar  
@@ -21,21 +11,21 @@
 
 ---
 
-## 📌 About the Project
+## About the Project
 
 Ethiopia has fewer than **1 physician per 10,000 people** (WHO), and approximately **80% of the population** lives in rural areas with limited access to health facilities. This project addresses that gap by providing:
 
-- 🩺 Symptom-based health guidance
-- 📚 Health education content in Amharic & English
-- 📍 Nearest health facility finder
-- 📅 Appointment scheduling
-- 🚨 Emergency first aid guidance
-- 📵 Offline functionality for core features
-- 📱 USSD support for feature phones (no smartphone needed)
+- Symptom-based health guidance
+- Health education content in English, Amharic, Oromo & Tigrinya
+- Nearest health facility finder
+- Appointment scheduling
+- Emergency first aid guidance
+- Offline functionality for core features
+- USSD support for feature phones (no smartphone needed)
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 ```
 ┌─────────────────────────────┐
@@ -66,7 +56,7 @@ Ethiopia has fewer than **1 physician per 10,000 people** (WHO), and approximate
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 ### Backend
 | Component | Technology |
@@ -104,7 +94,7 @@ Ethiopia has fewer than **1 physician per 10,000 people** (WHO), and approximate
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Python 3.10+
@@ -123,7 +113,7 @@ cd AI-Health-Assistant-Ethiopia/health-assistant
 ### 2. Backend Setup
 
 ```bash
-cd c:\Users\Student\Desktop\AI\health-assistant\backend
+cd health-assistant/backend
 pip install -r requirements.txt
 copy .env.example .env
 python manage.py runserver
@@ -134,9 +124,15 @@ Backend runs at: `http://localhost:8000`
 ### 3. Frontend Setup
 
 ```bash
-cd c:\Users\Student\Desktop\AI\health-assistant\frontend
-npm install
-npm start
+cd health-assistant/frontend
+npm.cmd install
+npm.cmd start
+```
+
+If `npm` is blocked in PowerShell, use `npm.cmd` instead or enable script execution with:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 ```
 
 Frontend runs at: `http://localhost:3000`
@@ -150,7 +146,7 @@ docker-compose up --build
 
 ---
 
-## 🔌 API Endpoints
+## API Endpoints
 
 Base URL: `http://localhost:8000/api/v1/`
 
@@ -169,7 +165,7 @@ Base URL: `http://localhost:8000/api/v1/`
 
 ---
 
-## 🤖 AI Model Performance
+## AI Model Performance
 
 | Metric | Result |
 |--------|--------|
@@ -182,17 +178,17 @@ Base URL: `http://localhost:8000/api/v1/`
 
 ---
 
-## 🚦 Urgency Levels
+## Urgency Levels
 
 | Level | Color | Action |
 |-------|-------|--------|
-| Low | 🟢 Green | Self-care at home |
-| Medium | 🟡 Yellow | Visit health center within 24–48 hrs |
-| High | 🔴 Red | Go to hospital immediately |
+| Low | Green | Self-care at home |
+| Medium | Yellow | Visit health center within 24–48 hrs |
+| High | Red | Go to hospital immediately |
 
 ---
 
-## 🔒 Ethical Framework
+## Ethical Framework
 
 - **Do No Harm** — decision-support only, never prescribes treatment
 - **Informed Consent** — users informed of system limitations at first launch
@@ -200,20 +196,20 @@ Base URL: `http://localhost:8000/api/v1/`
 - **Data Sovereignty** — health data stored on servers within Ethiopia
 - **Equity** — audio content for non-readers; designed for low-literacy users
 
-> ⚠️ **Disclaimer:** This assistant provides general health information only. It does not diagnose illness or replace professional medical care.
+> **Disclaimer:** This assistant provides general health information only. It does not diagnose illness or replace professional medical care.
 
 ---
 
-## ⚠️ Known Limitations
+## Known Limitations
 
-- Supports Amharic & English only (Oromo, Tigrinya planned for v2)
+- Supports English, Amharic, Oromo & Tigrinya (Somali, Sidama planned for v2)
 - Voice recognition degrades in noisy outdoor environments
 - Knowledge base covers ~30 common conditions
 - No clinical RCT validation (information tool only)
 
 ---
 
-## 🔮 Future Work
+## Future Work
 
 - Language expansion: Oromo, Tigrinya, Somali, Sidama
 - Telemedicine integration (video consultation)
@@ -223,17 +219,17 @@ Base URL: `http://localhost:8000/api/v1/`
 
 ---
 
-## 📄 License
+## License
 
 This project is open source under the [MIT License](LICENSE).
 
 ---
 
-## 📬 Contact
+## Contact
 
 - **Email:** health-assistant@example.com  
 - **GitHub:** [github.com/ayele705/AI-Health-Assistant-Ethiopia](https://github.com/ayele705/AI-Health-Assistant-Ethiopia)
 
 ---
 
-*Made with ❤️ for rural Ethiopia — University of Gondar, Department of Information Science*
+*Made for rural Ethiopia — University of Gondar, Department of Information Science*
