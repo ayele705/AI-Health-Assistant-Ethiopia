@@ -25,36 +25,32 @@
 3. Objectives
 4. System Architecture
 5. Functional Requirements
-6. Non-Functional Requirements
-7. Technology Stack
-8. Module Descriptions
-9. Database Design
-10. API Reference
-11. NLP and AI Engine
-12. Testing Results
-13. Deployment Guide
-14. Ethical Framework
-15. Known Limitations
-16. Future Work
-17. References
+6. Technology Stack
+7. Module Descriptions
+8. Database Design
+9. API Reference
+10. Knowledge Base
+11. Urgency Classification
+12. Known Limitations
+13. Future Work
+14. References
 
 ---
 
 ## 1. Project Overview
 
-The AI-Based Health Assistant is a conversational mobile application designed to improve
+The AI-Based Health Assistant is a conversational web application designed to improve
 healthcare access for rural communities in Ethiopia. It provides symptom-based health
 guidance, health education, and referral recommendations through a chat interface
-accessible on Android smartphones and via USSD on feature phones.
+accessible via web browser (PWA) and via USSD on feature phones.
 
 **Primary users:**
 - Rural community members who lack access to nearby health facilities
 - Health Extension Workers (HEWs) who need decision-support tools for triage and referral
 
 The assistant supports English, Amharic, Oromo and Tigrinya, operates in low-bandwidth environments,
-and includes offline functionality for core features. It is not a diagnostic tool
-and does not replace professional medical care. It acts as a first-contact health
-information bridge.
+and includes offline functionality via service worker caching. It is not a diagnostic tool
+and does not replace professional medical care.
 
 ---
 
@@ -88,8 +84,8 @@ basic health information, symptom guidance, and referral support for rural Ethio
 2. Design a system architecture optimized for low-bandwidth and offline environments
 3. Develop a prototype with symptom guidance, health education, and referral modules
 4. Curate a health knowledge base aligned with Ethiopia's disease burden
-5. Evaluate prototype usability and functional accuracy through structured testing
-6. Assess utility as a decision-support tool for Health Extension Workers
+5. Implement multilingual support (English, Amharic, Oromo, Tigrinya)
+6. Provide decision-support tools for Health Extension Workers
 
 ---
 
@@ -98,41 +94,47 @@ basic health information, symptom guidance, and referral support for rural Ethio
 The system follows a three-tier client-server architecture:
 
 ```
-+---------------------------+
-|     Presentation Tier     |
-|  Android App  |  USSD UI  |
-+---------------------------+
-           |
-+---------------------------+
-|     Application Tier      |
-|  Django REST API          |
-|  NLP Engine (mBERT)       |
-|  Symptom Assessment Engine|
-|  Recommendation Engine    |
-+---------------------------+
-           |
-+---------------------------+
-|       Data Tier           |
-|  PostgreSQL (structured)  |
-|  MongoDB (knowledge base) |
-|  SQLite (on-device cache) |
-+---------------------------+
-           |
-+---------------------------+
-|    Integration Layer      |
-|  DHIS2 API                |
-|  SMS Gateway              |
-|  (Africa's Talking)       |
-+---------------------------+
++--------------------------------------------------+
+|               Presentation Tier                    |
+|              React SPA (PWA)                       |
+|        USSD / IVR (Africa's Talking)              |
+|        SMS Chat / Voice (Web Speech API)          |
++--------------------------+------------------------+
+                           |
++--------------------------v------------------------+
+|               Application Tier                     |
+|   Django REST Framework (API)                      |
+|   Symptom Assessment Engine (keyword-based)        |
+|   Rule-based Chatbot (multi-turn interview)        |
+|   Medical domain engines (growth, vaccine, etc.)   |
+|   Translation Service (cache + Google API)         |
+|   SMS/USSD Engine (Africa's Talking)               |
+|   APScheduler (reminders)                          |
++--------------------------+------------------------+
+                           |
++--------------------------v------------------------+
+|                  Data Tier                          |
+|   SQLite (primary database)                        |
+|   JSON Knowledge Base (30+ conditions)             |
+|   Translation Cache (SQLite)                       |
++--------------------------+------------------------+
+                           |
++--------------------------v------------------------+
+|              Integration Layer                      |
+|   DHIS2 API (REST export/push)                    |
+|   Africa's Talking SMS/USSD Gateway               |
+|   Google Cloud Translation API                    |
+|   Google Places API (facility lookup)             |
++---------------------------------------------------+
 ```
 
 ### Offline Architecture
-A local SQLite database on the device caches:
-- Core health knowledge base content
+The React PWA uses a service worker (`sw.js`) to cache:
+- Application shell (HTML, JS, CSS)
+- Knowledge base queries (Cache API)
 - Recent consultation records
-- Static facility list
 
-When connectivity is restored, the app syncs with the server automatically.
+When connectivity is restored, the app operates normally from the server.
 
 ---
 
@@ -140,398 +142,675 @@ When connectivity is restored, the app syncs with the server automatically.
 
 | ID | Requirement | Priority |
 |---|---|---|
-| FR-01 | User registration with name, age, sex, location, language preference | High |
-| FR-02 | Symptom input via text and voice in English, Amharic, Oromo and Tigrinya | High |
-| FR-03 | Structured symptom interview through conversational interface | High |
-| FR-04 | Generate ranked list of possible conditions from symptoms | High |
-| FR-05 | Classify urgency: self-care / visit health center / emergency | High |
-| FR-06 | Health education content in text and audio format | High |
-| FR-07 | Proactive health tips based on user profile and season | Medium |
-| FR-08 | Nearest health facility lookup based on user location | High |
-| FR-09 | Generate referral summary for the user to present at facility | Medium |
-| FR-10 | Appointment scheduling at connected health facilities | Medium |
-| FR-11 | Medication information: dosage, side effects, interactions | Medium |
-| FR-12 | First aid guidance for common emergencies | High |
-| FR-13 | Emergency contact numbers for local facilities | High |
-| FR-14 | Aggregate anonymized data and report to DHIS2 | Low |
-| FR-15 | HEW community health dashboard | Medium |
-| FR-16 | Core features available in offline mode | High |
-| FR-17 | Data sync when connectivity is restored | High |
+| FR-01 | Symptom input via text in English, Amharic, Oromo and Tigrinya | High |
+| FR-02 | Structured symptom interview through conversational interface (5-step) | High |
+| FR-03 | Generate ranked list of possible conditions from symptoms (keyword match) | High |
+| FR-04 | Classify urgency: self-care / visit health center / emergency | High |
+| FR-05 | Health education content in text format | High |
+| FR-06 | Proactive health tips based on user profile and season | Medium |
+| FR-07 | Nearest health facility lookup based on user location | High |
+| FR-08 | Appointment scheduling at connected health facilities | Medium |
+| FR-09 | First aid guidance for common emergencies | High |
+| FR-10 | Emergency contact numbers for local facilities | High |
+| FR-11 | HEW community health dashboard | Medium |
+| FR-12 | Core features available in offline mode (PWA) | Medium |
+| FR-13 | Growth monitoring for children (WHO standards) | High |
+| FR-14 | Vaccination tracking (Ethiopia EPI schedule) | High |
+| FR-15 | Pregnancy follow-up and ANC visit tracking | High |
+| FR-16 | HEW field checklists and reporting | Medium |
+| FR-17 | SMS reminders and alerts for appointments | Medium |
+| FR-18 | Outbreak detection from consultation data | Low |
+| FR-19 | Aggregate anonymized data and report to DHIS2 | Low |
+| FR-20 | Medication information lookup | Medium |
+| FR-21 | Mental health screening (PHQ-9, GAD-7) | Medium |
+| FR-22 | Nutrition counseling (IYCF, micronutrients, therapeutic feeding) | Medium |
+| FR-23 | Chronic disease management (BP, glucose tracking) | Medium |
+| FR-24 | Supply chain / stock shortage reporting | Low |
+| FR-25 | Traditional medicine lookup and herb-drug interaction checking | Low |
+| FR-26 | USSD interface for feature phones | High |
+| FR-27 | Feedback and rating submission | Low |
 
 ---
 
-## 6. Non-Functional Requirements
-
-| ID | Requirement | Target |
-|---|---|---|
-| NFR-01 | Response time under normal network conditions | < 3 seconds |
-| NFR-02 | Concurrent user support | 10,000 users |
-| NFR-03 | Server uptime | 99.5% |
-| NFR-04 | Data encryption in transit | TLS 1.3 |
-| NFR-05 | Data encryption at rest | AES-256 |
-| NFR-06 | System Usability Scale (SUS) score | >= 70 |
-| NFR-07 | First-use navigation without training | <= 5 minutes |
-| NFR-08 | Code test coverage | >= 80% |
-| NFR-09 | Health data standard compliance | HL7 FHIR |
-| NFR-10 | Health system integration | DHIS2 API |
-| NFR-11 | Horizontal scalability | Supported |
-| NFR-12 | Knowledge base updates | Without downtime |
-
----
-
-## 7. Technology Stack
-
+## 6. Technology Stack
 
 ### Backend
 | Component | Technology |
 |---|---|
-| Language | Python 3.10 |
-| Framework | Django REST Framework |
-| Task Queue | Celery |
-| Cache and Broker | Redis |
-| Primary Database | PostgreSQL 14 |
-| Document Store | MongoDB 6.0 |
-| On-device Storage | SQLite |
+| Language | Python 3.11 |
+| Framework | Django 4.2 + Django REST Framework |
+| Database | SQLite |
+| Task Scheduler | APScheduler |
+| SMS/USSD | Africa's Talking SDK |
 
-### AI and NLP
+### Engine/AI Approach
+| Component | Approach |
+|---|---|
+| Symptom Assessment | Keyword-based multilingual symptom matching with scoring |
+| Chatbot | Rule-based multi-turn interview (5 steps per language) |
+| Growth Monitoring | WHO standard comparison tables (hardcoded) |
+| Vaccine Scheduling | Ethiopia EPI static schedule (date calculation) |
+| Pregnancy Tracking | ANC visit schedule calculator |
+| Outbreak Detection | Threshold-based alerting |
+| Translation | Pre-built JSON cache + Google Translate API fallback |
+
+### Frontend
 | Component | Technology |
 |---|---|
-| NLP Model | Multilingual BERT (mBERT) fine-tuned |
-| NLP Library | Hugging Face Transformers |
-| Symptom Classifier | Random Forest (scikit-learn) |
-| Text Processing | NLTK, spaCy |
-| Deep Learning | TensorFlow 2.x, Keras |
+| Framework | React 18 |
+| Maps | Leaflet / react-leaflet |
+| PWA | Service worker + manifest.json |
+| Voice Input | Web Speech API |
+| Offline Storage | Cache API |
+| State Mgmt | React context |
 
-### Mobile (Android)
+### USSD/IVR Interface
 | Component | Technology |
 |---|---|
-| Language | Kotlin |
-| Architecture | MVVM |
-| HTTP Client | Retrofit |
-| Local Database | Room |
-| Voice Input | Android SpeechRecognizer API |
-
-### USSD Interface
-| Component | Technology |
-|---|---|
-| Language | JavaScript / Node.js |
-| Gateway | Africa's Talking USSD API |
+| Language | Python (Django views) |
+| Gateway | Africa's Talking USSD/IVR API |
 
 ### DevOps
 | Component | Technology |
 |---|---|
 | Containerization | Docker, Docker Compose |
-| CI/CD | GitHub Actions |
-| Cloud Hosting | AWS EC2 |
-| Web Server | Nginx |
-| API Testing | Postman |
 
 ---
 
-## 8. Module Descriptions
+## 7. Module Descriptions
 
-### 8.1 NLP Module
-Processes raw user input (text or voice) to extract health intent and symptom entities.
+### 7.1 Symptom Assessment Engine
+Processes user symptom input using keyword matching across multiple languages.
+No machine learning models are used — the engine maps symptom keywords (English,
+Amharic, Tigrinya, Oromo, Sidamo) to conditions from the knowledge base and
+scores them by overlap count.
 
-- **Model**: Fine-tuned mBERT on 15,000 Amharic/English health queries
-- **Tasks**: Intent classification, Named Entity Recognition (NER) for symptoms
-- **Intent labels**: symptom_report, health_query, appointment_request, emergency
-- **Output**: Extracted symptom list and classified intent
-
-```python
-from transformers import AutoTokenizer, AutoModelForTokenClassification
-from transformers import pipeline
-
-tokenizer = AutoTokenizer.from_pretrained("health-assistant-amharic-bert")
-model = AutoModelForTokenClassification.from_pretrained("health-assistant-amharic-bert")
-nlp_pipeline = pipeline("ner", model=model, tokenizer=tokenizer, aggregation_strategy="simple")
-
-def extract_symptoms(user_input: str) -> list:
-    """Extract symptom entities from user input text."""
-    entities = nlp_pipeline(user_input)
-    symptoms = [e["word"] for e in entities if e["entity_group"] == "SYMPTOM"]
-    return symptoms
-```
-
-### 8.2 Symptom Assessment Engine
-Classifies symptoms into probable conditions and assigns urgency level.
-
-- **Model**: Random Forest classifier
-- **Training data**: 50,000 symptom-condition pairs from Ethiopian disease surveillance and ICD-10
-- **Accuracy**: 84% on test set (top-3 condition prediction)
-- **Output**: Top-3 conditions with probabilities, urgency level, recommendations
+- **Method**: Multilingual symptom keyword mapping + condition scoring
+- **Languages**: English, Amharic, Tigrinya, Oromo, Sidamo (input mapped to English)
+- **Output**: Ranked conditions with scores, urgency level, recommendations
 
 ```python
-import joblib
+from core.symptom_engine import assess
 
-symptom_classifier = joblib.load("models/symptom_classifier_v2.pkl")
-mlb = joblib.load("models/symptom_binarizer.pkl")
-
-def assess_symptoms(symptoms: list, patient_age: int, patient_sex: str) -> dict:
-    """Generate health assessment from symptom list and patient demographics."""
-    symptom_vector = mlb.transform([symptoms])
-    probabilities = symptom_classifier.predict_proba(symptom_vector)
-    top_conditions = get_top_conditions(probabilities, n=3)
-    urgency = classify_urgency(top_conditions, symptoms)
-    return {
-        "conditions": top_conditions,
-        "urgency_level": urgency,
-        "recommendations": generate_recommendations(top_conditions, urgency)
-    }
+result = assess(
+    symptoms=["fever", "headache", "fatigue"],
+    age=30,
+    sex="female",
+    language="en"
+)
+# Returns: {conditions: [...], urgency_level: str, recommendations: str}
 ```
 
-### 8.3 Health Knowledge Base
-A curated repository of health information covering Ethiopia's primary disease burden.
+### 7.2 Chatbot Module
+Manages a 5-step conversational symptom interview. Questions are asked
+sequentially: primary symptom → duration → additional symptoms → age → sex.
+At the end, the symptom engine runs and returns the assessment.
 
-- **Format**: JSON documents stored in MongoDB
-- **Coverage**: 30+ common conditions including malaria, TB, diarrheal diseases, respiratory infections, maternal health, nutrition
-- **Languages**: English, Amharic, Oromo and Tigrinya for all content
-- **Sources**: WHO Primary Care Guidelines, Ethiopian Standard Treatment Guidelines, FMOH materials
+- **Languages**: English, Amharic, Tigrinya, Oromo (with scaffolding for Sidamo, Somali, Afar, Wolaytta, Hadiyya)
+- **Storage**: In-memory session dictionary (prototype)
+- **Output**: Assessment result with conditions, urgency, recommendations
 
-### 8.4 Referral and Recommendation Engine
-Maps urgency level to recommended action and provides facility information.
+```python
+from core.chatbot import start_session, process_message
 
-| Urgency Level | Color Code | Recommended Action |
-|---|---|---|
-| Low | Green | Self-care guidance provided |
-| Medium | Yellow | Visit nearest health post or health center |
-| High | Red | Seek emergency care immediately |
+state = start_session("session-123", language="am")
+response = process_message("session-123", "ራስ ምታት አለኝ")
+```
 
-### 8.5 USSD Interface
+### 7.3 Health Knowledge Base
+A curated repository of health information stored as a JSON file covering
+Ethiopia's primary disease burden.
+
+- **Format**: JSON document (4060 lines)
+- **Coverage**: 30+ common conditions including malaria, TB, diarrheal diseases,
+  respiratory infections, maternal health, nutrition
+- **Languages**: English, Amharic, Tigrinya, Oromo for all content
+- **Sources**: WHO Primary Care Guidelines, Ethiopian Standard Treatment Guidelines,
+  FMOH materials
+- **Also includes**: Health facilities list, medications list, health tips
+
+### 7.4 Growth Monitoring Engine
+Assesses child growth against WHO growth standards using hardcoded z-score tables.
+
+- **Metrics**: Weight-for-age, height-for-age, weight-for-height
+- **Output**: Normal / moderate malnutrition / severe malnutrition
+- **Languages**: English, Amharic, Tigrinya, Oromo
+
+### 7.5 Vaccine Schedule Engine
+Calculates due vaccines based on a child's date of birth and the Ethiopia
+Expanded Program on Immunization (EPI) schedule.
+
+- **Vaccines**: BCG, OPV, Penta, PCV, Rotavirus, IPV, Measles, MR, Td, HPV
+- **Output**: List of due and upcoming vaccines with dates
+
+### 7.6 Pregnancy & ANC Tracking
+Tracks pregnancy and antenatal care visits.
+
+- **Registration**: LMP date, expected delivery date
+- **ANC Visits**: Scheduled visit timeline with due dates
+- **Output**: Visit schedule, risk flags
+
+### 7.7 HEW Checklists
+Digital checklists for Health Extension Workers during household visits.
+
+- **Types**: Child health, maternal health, sanitation, nutrition, chronic disease
+- **Output**: Completed checklist with submission timestamp
+
+### 7.8 USSD Interface
 Menu-driven interface for feature phones without internet access.
 
 - Powered by Africa's Talking USSD API
 - Covers: symptom reporting (simplified), health tips, facility finder
 - No smartphone or internet required
 
-### 8.6 Offline Sync Module
-Manages local data caching and server synchronization.
+### 7.9 SMS Engine
+Sends SMS reminders and alerts via Africa's Talking gateway.
 
-- Caches knowledge base, recent consultations, and facility list to SQLite
-- Detects connectivity and triggers sync automatically
-- Handles conflict resolution for simultaneous updates
+- **Features**: Appointment reminders, medication reminders, danger alerts
+- **Storage**: SMS log in database
+
+### 7.10 Translation Service
+Hybrid translation using a pre-built JSON cache with Google Translate API fallback.
+
+- **Pre-built translations**: Loaded on startup into in-memory cache
+- **API fallback**: Google Cloud Translation API
+- **Languages**: English, Amharic, Tigrinya, Oromo, Somali, Sidamo, Afar
+
+### 7.11 Outbreak Detector
+Threshold-based disease outbreak detection from consultation data.
+
+- **Method**: Compares recent consultation counts for a condition against a baseline
+- **Alerts**: Generated when threshold exceeded
+- **Output**: List of active outbreak alerts
+
+### 7.12 DHIS2 Reporter
+Exports aggregate health data to DHIS2 for national health surveillance.
+
+- **Export**: Aggregate consultation counts by condition, region, age group
+- **Push**: Sends data to DHIS2 data value sets
+- **Status**: Simulated in prototype (REST scaffold in place)
+
+### 7.13 Mental Health Screening
+PHQ-9 (depression) and GAD-7 (anxiety) screening questionnaires.
+
+- **Scoring**: Automatic score calculation with severity classification
+- **Crisis detection**: Flags suicidal ideation responses
+
+### 7.14 Nutrition Counseling
+Provides guidance on IYCF (Infant and Young Child Feeding), micronutrients,
+and therapeutic feeding for malnutrition.
+
+- **IYCF**: Breastfeeding and complementary feeding guidance
+- **Micronutrients**: Deficiency prevention guidance
+- **Therapeutic feeding**: Management of acute malnutrition
+
+### 7.15 Chronic Disease Management
+Tracks blood pressure and blood glucose readings for chronic disease patients.
+
+- **BP Assessment**: Classification (normal / elevated / stage 1 / stage 2 / crisis)
+- **Glucose Assessment**: Classification (normal / pre-diabetic / diabetic)
+- **Adherence**: Medication reminder support
+
+### 7.16 Supply Chain / Stock Tracking
+Reports and tracks stock shortages at health facilities.
+
+- **Report**: Medicine/supply shortage with quantity and facility
+- **View**: List of reported shortages
 
 ---
 
-## 9. Database Design
+## 8. Database Design
 
-### users
-```
-user_id         UUID PRIMARY KEY
-full_name       VARCHAR(100)
-age             INTEGER
-sex             VARCHAR(10)
-region          VARCHAR(50)
-woreda          VARCHAR(50)
-kebele          VARCHAR(50)
-phone_number    VARCHAR(20)
-language_pref   VARCHAR(10)   -- 'am' or 'en'
-created_at      TIMESTAMP
-last_login      TIMESTAMP
-```
-
-### health_profiles
-```
-profile_id          UUID PRIMARY KEY
-user_id             UUID FOREIGN KEY -> users
-medical_history     TEXT
-allergies           TEXT
-chronic_conditions  TEXT
-current_medications TEXT
-updated_at          TIMESTAMP
-```
+The project uses SQLite as its database engine with the following models
+(defined via Django ORM).
 
 ### consultations
 ```
-consultation_id   UUID PRIMARY KEY
-user_id           UUID FOREIGN KEY -> users
-start_time        TIMESTAMP
-end_time          TIMESTAMP
-primary_symptom   VARCHAR(100)
-all_symptoms      JSONB
-assessment_result JSONB
-urgency_level     ENUM('low','medium','high')
-recommendations   TEXT
-status            VARCHAR(20)
-```
-
-### conditions
-```
-condition_id    UUID PRIMARY KEY
-icd_code        VARCHAR(10)
-name_en         VARCHAR(100)
-name_am         VARCHAR(100)
-description_en  TEXT
-description_am  TEXT
-symptoms        JSONB
-treatments      TEXT
-urgency_level   VARCHAR(10)
-category        VARCHAR(50)
+session_id         VARCHAR(100) PRIMARY KEY
+user_name          VARCHAR(100)
+age                INTEGER
+sex                VARCHAR(10)
+region             VARCHAR(100)
+language           VARCHAR(5)
+symptoms           JSON
+assessment_result  JSON
+urgency_level      VARCHAR(30)
+created_at         DATETIME
 ```
 
 ### health_facilities
 ```
-facility_id     UUID PRIMARY KEY
-name            VARCHAR(100)
-facility_type   VARCHAR(50)
-region          VARCHAR(50)
-woreda          VARCHAR(50)
-kebele          VARCHAR(50)
-latitude        DECIMAL(9,6)
-longitude       DECIMAL(9,6)
-phone           VARCHAR(20)
-services        JSONB
-operating_hours VARCHAR(100)
+name               VARCHAR(200)
+facility_type      VARCHAR(50)
+region             VARCHAR(100)
+woreda             VARCHAR(100)
+phone              VARCHAR(20)
+latitude           FLOAT
+longitude          FLOAT
 ```
 
 ### appointments
 ```
-appointment_id  UUID PRIMARY KEY
-user_id         UUID FOREIGN KEY -> users
-facility_id     UUID FOREIGN KEY -> health_facilities
-scheduled_time  TIMESTAMP
-reason          TEXT
-status          ENUM('pending','confirmed','cancelled','completed')
-created_at      TIMESTAMP
+patient_name       VARCHAR(100)
+patient_phone      VARCHAR(20)
+facility_id        VARCHAR(50)
+facility_name      VARCHAR(200)
+appointment_date   DATE
+appointment_time   TIME
+reason             TEXT
+urgency_level      VARCHAR(30)
+status             VARCHAR(20)  -- pending / confirmed / cancelled
+language           VARCHAR(5)
+created_at         DATETIME
 ```
 
-### health_content
+### children
 ```
-content_id      UUID PRIMARY KEY
-title_en        VARCHAR(200)
-title_am        VARCHAR(200)
-category        VARCHAR(50)
-content_type    VARCHAR(20)
-text_en         TEXT
-text_am         TEXT
-audio_url_en    VARCHAR(255)
-audio_url_am    VARCHAR(255)
-target_audience VARCHAR(50)
-published_at    TIMESTAMP
+child_id           VARCHAR(50) PRIMARY KEY
+name               VARCHAR(100)
+date_of_birth      DATE
+sex                VARCHAR(10)
+mother_name        VARCHAR(100)
+kebele             VARCHAR(100)
+region             VARCHAR(100)
+phone              VARCHAR(20)
+created_at         DATETIME
 ```
+
+### growth_records
+```
+child              FK -> children
+date               DATE
+weight_kg          FLOAT
+height_cm          FLOAT
+muac_cm            FLOAT (optional)
+```
+
+### vaccination_records
+```
+child              FK -> children
+vaccine_name       VARCHAR(50)
+dose_number        INTEGER
+date_administered  DATE
+facility_name      VARCHAR(200)
+```
+
+### pregnancy_records
+```
+record_id          VARCHAR(50) PRIMARY KEY
+mother_name        VARCHAR(100)
+age                INTEGER
+lmp_date           DATE
+edd_date           DATE
+gravida            INTEGER
+para               INTEGER
+region             VARCHAR(100)
+phone              VARCHAR(20)
+language           VARCHAR(5)
+created_at         DATETIME
+```
+
+### anc_visits
+```
+pregnancy          FK -> pregnancy_records
+visit_number       INTEGER
+visit_date         DATE
+gestational_week   INTEGER
+bp_systolic        INTEGER
+bp_diastolic       INTEGER
+weight_kg          FLOAT
+hemoglobin         FLOAT
+fundal_height      FLOAT
+complications      TEXT
+```
+
+### hew_checklists
+```
+visit_type         VARCHAR(50)
+child_id           VARCHAR(50)
+answers            JSON
+submitted_at       DATETIME
+```
+
+### medication_reminders
+```
+patient_name       VARCHAR(100)
+patient_phone      VARCHAR(20)
+medication_name    VARCHAR(100)
+dosage             VARCHAR(100)
+time_of_day        VARCHAR(20)
+language           VARCHAR(5)
+active             BOOLEAN
+```
+
+### sms_logs
+```
+recipient          VARCHAR(20)
+message            TEXT
+status             VARCHAR(20)
+message_type       VARCHAR(30)
+sent_at            DATETIME
+```
+
+### emergency_contacts
+```
+name               VARCHAR(100)
+phone              VARCHAR(20)
+facility_name      VARCHAR(200)
+region             VARCHAR(100)
+```
+
+### mental_health_screenings
+```
+patient_name       VARCHAR(100)
+screening_type     VARCHAR(10)  -- phq9 / gad7
+answers            JSON
+total_score        INTEGER
+severity           VARCHAR(30)
+flagged            BOOLEAN
+created_at         DATETIME
+```
+
+### chronic_disease_records
+```
+patient_id         VARCHAR(50)
+patient_name       VARCHAR(100)
+condition_type     VARCHAR(30)  -- hypertension / diabetes
+region             VARCHAR(100)
+phone              VARCHAR(20)
+created_at         DATETIME
+```
+
+### chronic_disease_readings
+```
+patient            FK -> chronic_disease_records
+reading_type       VARCHAR(20)  -- bp / glucose
+reading_value      FLOAT
+reading_date       DATE
+notes              TEXT
+```
+
+### supply_shortage_reports
+```
+facility_name      VARCHAR(200)
+item_name          VARCHAR(100)
+quantity_needed    INTEGER
+urgency            VARCHAR(20)
+reported_at        DATETIME
+```
+
+### feedback_ratings
+```
+session_id         VARCHAR(100)
+rating             INTEGER
+category           VARCHAR(30)
+comment            TEXT
+created_at         DATETIME
+```
+
+Additional models exist for consent logging, accessibility sessions,
+CHV registry, partner registry, pilot cohorts, calendar events,
+referrals, traditional remedies, USSD session logs, etc.
 
 ---
 
-## 10. API Reference
+## 9. API Reference
 
-**Base URL:** `https://api.healthassistant.et/api/v1`
+**Base URL:** `http://localhost:8000`
 
-All endpoints require `Authorization: Bearer <token>` except `/auth/register` and `/auth/login`.
-
-### Authentication
+### Chat & Assessment
 | Method | Endpoint | Description |
 |---|---|---|
-| POST | /auth/register | Register a new user |
-| POST | /auth/login | Authenticate and receive JWT token |
-| POST | /auth/refresh | Refresh access token |
+| POST | /chat/start/ | Start a new chat session |
+| POST | /chat/{session_id}/message/ | Send message in session |
+| POST | /assess/ | Quick symptom assessment (single step) |
+| POST | /safe-response/ | Get disclaimered health info |
 
-**POST /auth/register — Request Body**
+**POST /chat/start/ — Request Body**
 ```json
 {
-  "full_name": "Almaz Tadesse",
-  "age": 28,
-  "sex": "female",
-  "region": "Oromia",
-  "phone_number": "+251911234567",
-  "language_preference": "am"
+  "language": "am"
 }
 ```
 
-**POST /auth/login — Response**
+**POST /chat/start/ — Response**
 ```json
 {
-  "access_token": "eyJ...",
-  "refresh_token": "eyJ...",
-  "expires_in": 3600
+  "session_id": "uuid",
+  "message": "ሰላም! እኔ የጤና ረዳትዎ ነኝ። ዛሬ ዋናው ምልክትዎ ምንድን ነው?",
+  "step": 0,
+  "done": false
 }
 ```
 
-### Consultations
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | /consultations/start | Start a new symptom assessment session |
-| POST | /consultations/{id}/message | Send a message in an active consultation |
-| GET | /consultations/{id}/assessment | Retrieve the final assessment result |
-| GET | /consultations/history | Get user consultation history |
-
-**GET /consultations/{id}/assessment — Response**
+**POST /chat/{session_id}/message/ — Response**
 ```json
 {
-  "consultation_id": "uuid",
   "conditions": [
-    { "name": "Malaria", "probability": 0.72, "icd_code": "B54" },
-    { "name": "Typhoid Fever", "probability": 0.15, "icd_code": "A01.0" }
+    {"name": "Malaria", "score": 0.8, "id": "malaria"},
+    {"name": "Typhoid", "score": 0.3, "id": "typhoid"}
   ],
   "urgency_level": "medium",
   "recommendations": "Visit your nearest health center within 24 hours.",
-  "self_care_advice": "Rest, drink fluids, take paracetamol for fever.",
-  "red_flags": ["Difficulty breathing", "Seizures - seek emergency care immediately"]
+  "self_care": "Rest, drink fluids, take paracetamol for fever.",
+  "red_flags": ["Difficulty breathing — seek emergency care immediately"],
+  "done": true
 }
 ```
+
+**POST /assess/ — Request Body**
+```json
+{
+  "symptoms": ["fever", "headache", "fatigue"],
+  "age": 28,
+  "sex": "female",
+  "language": "en"
+}
+```
+
+### Knowledge Base
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | /tips/ | List health tips (optional ?category=) |
+| GET | /facilities/ | List health facilities (optional ?region=) |
+| GET | /conditions/ | List all conditions |
+
+### Consultations & Appointments
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | /consultations/ | List consultations |
+| GET | /appointments/ | List appointments |
+| POST | /appointments/book/ | Book an appointment |
+
+**POST /appointments/book/ — Request Body**
+```json
+{
+  "patient_name": "Almaz Tadesse",
+  "patient_phone": "+251911234567",
+  "facility_name": "Gondar Health Center",
+  "appointment_date": "2026-06-15",
+  "appointment_time": "10:00",
+  "reason": "Headache and fever",
+  "language": "am"
+}
+```
+
+### Medications
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | /medications/ | Search medications (?q=paracetamol) |
+| GET | /medications/{id}/ | Medication detail |
 
 ### Facilities
 | Method | Endpoint | Description |
 |---|---|---|
-| GET | /facilities/nearby | Get nearby health facilities |
-| GET | /facilities/{id} | Get details for a specific facility |
+| GET | /facilities/nearest/ | Nearest facilities (?lat=&lon=&radius=) |
+| GET | /facilities/live/ | Live nearby facilities (Google Places) |
 
-**GET /facilities/nearby — Query Parameters**
-```
-latitude=9.0250&longitude=38.7469&radius_km=20&type=health_center
-```
-
-### Appointments
+### Children / Growth / Vaccines
 | Method | Endpoint | Description |
 |---|---|---|
-| POST | /appointments | Schedule an appointment |
-| GET | /appointments | List user appointments |
-| PATCH | /appointments/{id} | Update appointment status |
+| POST | /children/register/ | Register a child |
+| GET | /children/{id}/growth/ | Growth history |
+| POST | /children/{id}/growth/add/ | Add growth record |
+| POST | /growth/assess/ | Assess growth (WHO) |
+| GET | /children/{id}/vaccines/ | Vaccine schedule |
+| POST | /children/{id}/vaccines/add/ | Log vaccine dose |
 
-### Health Content
+### Pregnancy
 | Method | Endpoint | Description |
 |---|---|---|
-| GET | /content/education | List health education articles |
-| GET | /content/education/{id} | Get a specific article |
-| GET | /content/categories | List content categories |
+| POST | /pregnancy/register/ | Register pregnancy |
+| GET | /pregnancy/{id}/schedule/ | ANC schedule |
+| POST | /pregnancy/{id}/anc/add/ | Log ANC visit |
+
+### HEW Tools
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | /hew/checklists/ | List checklist types |
+| GET | /hew/checklists/{type}/ | Get checklist |
+| POST | /hew/checklists/submit/ | Submit checklist |
+
+### SMS
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | /sms/inbound/ | Inbound SMS webhook |
+| POST | /sms/send/ | Send SMS |
+| GET | /sms/logs/ | SMS logs |
+
+### Reminders
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | /reminders/ | List reminders |
+| POST | /reminders/subscribe/ | Subscribe |
+| POST | /reminders/{id}/unsubscribe/ | Unsubscribe |
+
+### Analytics & Outbreak
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | /analytics/ | Dashboard KPIs |
+| GET | /analytics/consultations/ | Consultation analytics |
+| GET | /outbreak/alerts/ | Outbreak alerts |
+| GET | /outbreak/trend/{condition_id}/ | Disease trend |
+
+### DHIS2 Integration
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | /dhis2/export/ | Export aggregate data |
+| POST | /dhis2/push/ | Push data to DHIS2 |
+
+### Translation
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | /translate/ | Translate text |
+| GET | /translate/languages/ | Supported languages |
+| GET | /translate/cache/ | Cache stats |
+| POST | /translate/cache/clear/ | Clear cache |
+
+### Mental Health
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | /mental-health/questions/ | PHQ-9 / GAD-7 questions |
+| POST | /mental-health/screen/ | Submit screening |
+
+### Nutrition
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | /nutrition/iycf/ | IYCF guidance |
+| GET | /nutrition/micronutrients/ | Micronutrient guidance |
+| GET | /nutrition/therapeutic/ | Therapeutic feeding |
+| POST | /nutrition/assess/ | Nutrition risk assessment |
+
+### Chronic Disease
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | /chronic/bp/ | BP assessment |
+| POST | /chronic/glucose/ | Glucose assessment |
+| POST | /chronic/patients/register/ | Register patient |
+| GET | /chronic/patients/{id}/readings/ | Patient readings |
+| POST | /chronic/patients/{id}/readings/add/ | Add reading |
+
+### Supply Chain
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | /supply/list/ | Supply list |
+| POST | /supply/report/ | Report shortage |
+
+### Traditional Medicine
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | /trad-medicine/ | Search remedies |
+| GET | /trad-medicine/{id}/ | Remedy detail |
+| POST | /trad-medicine/check-interactions/ | Check interactions |
+
+### Emergency
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | /emergency-contacts/ | List contacts |
+| POST | /emergency-contacts/create/ | Add contact |
+| POST | /emergency-alert/send/ | Send alert |
+
+### USSD / IVR
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | /ussd/ | USSD webhook |
+| POST | /ivr/ | IVR webhook |
+
+### Feedback
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | /feedback/ | Submit rating |
+| GET | /feedback/stats/ | Feedback statistics |
+
+### Accessibility
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | /accessibility/consent/submit/ | Submit consent |
+| POST | /accessibility/consent/{id}/withdraw/ | Withdraw consent |
+| GET | /accessibility/languages/ | Supported languages |
 
 ---
 
-## 11. NLP and AI Engine
+## 10. Knowledge Base
 
-### Model Details
-| Property | Value |
-|---|---|
-| Base model | bert-base-multilingual-cased (mBERT) |
-| Fine-tuning dataset | 15,000 Amharic/English health queries |
-| Tasks | Intent classification + NER symptom extraction |
-| Library | Hugging Face Transformers 4.x |
+The medical knowledge base is stored as a single JSON file (`data/knowledge_base.json`, ~4060 lines) with the following structure:
 
-### Intent Classes
-| Intent | Description | Example |
-|---|---|---|
-| symptom_report | User describing symptoms | 'I have fever and cough' |
-| health_query | General health information request | 'How do I prevent malaria?' |
-| appointment_request | User wants to book a visit | 'I want to see a doctor' |
-| emergency | Urgent or life-threatening situation | 'My wife is bleeding heavily' |
-| greeting | Conversation opener | 'Hello' |
-| out_of_scope | Non-health topic | Redirect to health topics |
+```json
+{
+  "conditions": [
+    {
+      "id": "malaria",
+      "name_en": "Malaria",
+      "name_am": "ወባ",
+      "name_ti": "ወርቂ",
+      "name_om": "Busaa",
+      "symptoms": ["fever", "chills", "sweating", "headache", "fatigue"],
+      "description_en": "A life-threatening disease transmitted by mosquitoes...",
+      "description_am": "...",
+      "self_care_en": "Rest, drink fluids, take paracetamol for fever...",
+      "self_care_am": "...",
+      "urgency": "medium",
+      "red_flags": ["difficulty breathing", "convulsions", "severe weakness"]
+    }
+  ],
+  "medications": [...],
+  "facilities": [...],
+  "health_tips": [...]
+}
+```
 
-### Symptom Classifier
-| Property | Value |
-|---|---|
-| Algorithm | Random Forest |
-| Training samples | 50,000 symptom-condition pairs |
-| Features | Symptom binary vector + age + sex |
-| Top-1 accuracy | 67% |
-| Top-3 accuracy | 84% |
+Languages supported per condition: English, Amharic, Tigrinya, Oromo.
 
-### Urgency Classification Logic
+---
+
+## 11. Urgency Classification Logic
+
 ```
 IF any red-flag symptom present
    (difficulty breathing, loss of consciousness, heavy bleeding, seizure, chest pain):
     urgency = HIGH  ->  emergency
 
-ELSE IF top condition probability > 0.6 AND condition is serious (malaria, TB, sepsis):
+ELSE IF condition score > 0.5 AND condition is serious (malaria, TB, sepsis):
     urgency = MEDIUM  ->  visit health center
 
 ELSE IF symptoms present < 3 days AND no red flags:
@@ -541,206 +820,93 @@ ELSE:
     urgency = MEDIUM  ->  visit health center to be safe
 ```
 
----
+### Urgency Levels
 
-## 12. Testing Results
-
-### Unit Testing
-| Module | Tests | Passed | Pass Rate |
-|---|---|---|---|
-| NLP Module | 45 | 43 | 95.6% |
-| Symptom Assessment Engine | 60 | 57 | 95.0% |
-| User Management | 30 | 30 | 100% |
-| Facility Finder | 25 | 24 | 96.0% |
-| Appointment Scheduler | 20 | 20 | 100% |
-| Offline Sync Module | 35 | 33 | 94.3% |
-| **Total** | **215** | **207** | **96.3%** |
-
-### User Acceptance Testing (UAT)
-**Participants:** 45 users — 30 community members + 15 HEWs  
-**Location:** 3 rural communities, Oromia region  
-**Duration:** 2 weeks
-
-| Task | Completion Rate | Avg. Time |
-|---|---|---|
-| Register and create profile | 93% | 4.2 min |
-| Report symptoms and receive assessment | 87% | 6.8 min |
-| Access health education article | 96% | 2.1 min |
-| Find nearest health facility | 91% | 3.4 min |
-| Schedule appointment | 82% | 5.6 min |
-| Use voice input for symptom reporting | 78% | 7.3 min |
-| Access system in offline mode | 89% | 3.9 min |
-
-### Key Metrics
-| Metric | Result |
-|---|---|
-| SUS Score - Overall | 74.3 / 100 (Good) |
-| SUS Score - HEWs | 79.1 / 100 |
-| SUS Score - Community members | 71.8 / 100 |
-| Symptom accuracy - Top-1 | 67% |
-| Symptom accuracy - Top-3 | 81% |
-| User satisfaction | 84% |
-| Would use the system again | 91% |
-| Amharic language support rated highly | 96% |
-| Audio health content rated highly | 89% |
-
-### Issues Found in UAT
-| Issue | Severity | Status |
-|---|---|---|
-| Voice recognition drops in noisy outdoor environments | Medium | Backlog |
-| Symptom interview too long (>10 questions) | Medium | Fixed in Sprint 10 |
-| Appointment feature underused | Low | UX improvement planned |
-| Users requested Oromo language support | High | Planned for v2 |
-| DHIS2 data format mapping errors | Medium | Fixed - transformation layer added |
-| Offline sync conflict resolution failures | Medium | Fixed in Sprint 9 |
+| Level | Color | Action |
+|-------|-------|--------|
+| Low | Green | Self-care at home |
+| Medium | Yellow | Visit health center within 24–48 hrs |
+| High | Red | Go to hospital immediately |
 
 ---
 
-## 13. Deployment Guide
-
-### Prerequisites
-- Docker and Docker Compose installed
-- AWS EC2 instance (t3.medium or larger)
-- Domain name with SSL certificate
-- Africa's Talking account (USSD and SMS)
-- PostgreSQL 14 and MongoDB 6.0
-
-### Environment Variables (.env)
-```
-SECRET_KEY=your-django-secret-key
-DEBUG=False
-ALLOWED_HOSTS=yourdomain.com
-
-DATABASE_URL=postgresql://user:password@db:5432/healthassistant
-MONGO_URI=mongodb://mongo:27017/healthassistant
-REDIS_URL=redis://redis:6379/0
-
-AFRICASTALKING_USERNAME=your-username
-AFRICASTALKING_API_KEY=your-api-key
-
-DHIS2_BASE_URL=https://dhis2.moh.gov.et
-DHIS2_USERNAME=your-dhis2-user
-DHIS2_PASSWORD=your-dhis2-password
-
-JWT_SECRET_KEY=your-jwt-secret
-JWT_EXPIRY_HOURS=24
-```
-
-### Startup Commands
-```bash
-git clone https://github.com/ayele705/AI-Health-Assistant-Ethiopia.git
-cd health-assistant-ethiopia
-cp backend/.env.example backend/.env
-# Edit .env with your values
-
-docker-compose up --build -d
-docker-compose exec backend python manage.py migrate
-docker-compose exec backend python manage.py loaddata knowledge_base_seed.json
-docker-compose exec backend python manage.py createsuperuser
-```
-
-### Services
-| Service | Port | Description |
-|---|---|---|
-| backend | 8000 | Django REST API |
-| nginx | 80, 443 | Reverse proxy + SSL |
-| postgres | 5432 | Primary database |
-| mongo | 27017 | Knowledge base store |
-| redis | 6379 | Cache and Celery broker |
-| celery | - | Async task worker |
-
-### Health Check
-```bash
-curl https://yourdomain.com/api/v1/health
-# Expected: {"status": "ok", "version": "1.0.0"}
-```
-
----
-
-## 14. Ethical Framework
-
-| Principle | Implementation |
-|---|---|
-| Do No Harm | System is decision-support only; never prescribes treatment or dosages |
-| Informed Consent | Users informed at first launch that the system provides information, not diagnosis |
-| Privacy by Design | No PII required to use core features; all stored data encrypted |
-| Data Minimization | Only data necessary for health guidance is collected |
-| Transparency | All AI outputs include confidence indicators and clear disclaimers |
-| Human Oversight | All urgency outputs direct users toward human health services |
-| Equity | Designed for low-literacy users; audio content included for non-readers |
-| Data Sovereignty | Health data stored on servers within Ethiopia |
-
-### User Disclaimer
-> This assistant provides general health information only. It does not diagnose illness
-> or replace professional medical care. Always consult a qualified health worker or
-> visit your nearest health facility for any serious health concern.
-
-### Data Handling
-- No real patient data used in training or testing
-- Interaction logs stored for 90 days then deleted
-- Users can request deletion of their data at any time
-- Compliant with Ethiopia's Personal Data Protection Proclamation and GDPR principles
-
----
-
-## 15. Known Limitations
+## 12. Known Limitations
 
 | Limitation | Impact | Mitigation |
 |---|---|---|
-| Amharic, English, Oromo, Tigrinya only | Excludes Somali, Sidama speakers | Planned for v2 |
-| NLP requires internet for full processing | Reduced accuracy offline | Rule-based fallback available offline |
-| No clinical RCT validation | Cannot claim clinical-grade accuracy | Clear disclaimers; information tool only |
-| Voice recognition degrades in noisy environments | Lower usability outdoors | Improved acoustic model planned |
+| Symptom assessment is keyword-based (not ML) | Lower accuracy than ML approach | Rule-based fallback; sufficient for prototype |
+| English, Amharic, Oromo, Tigrinya only | Excludes Somali, Sidama speakers | Input maps exist for 5+ languages; UI planned for v2 |
+| Requires internet for full API access | Reduced functionality offline | PWA service worker caches app shell |
+| No authentication system | Open access; no user privacy controls | Acceptable for prototype; JWT/auth planned |
+| Voice recognition depends on browser API | Inconsistent across browsers | Server-side STT proxy available as fallback |
 | Knowledge base covers ~30 conditions | Rare conditions not covered | Fallback: visit a health center |
-| No live DHIS2 integration in prototype | Reporting is simulated | Full integration in production version |
-| Limited field validation | Real-world effectiveness unconfirmed | Pilot deployment recommended |
+| No clinical RCT validation | Cannot claim clinical-grade accuracy | Clear disclaimers; information tool only |
+| No formal test suite | Regression risk | Manual testing only in prototype |
+| DHIS2 integration is simulated | No live national reporting | REST endpoints scaffolded for production |
+| SMS/USSD requires Africa's Talking account | Not functional without credentials | Sandbox mode available for testing |
 
 ---
 
-## 16. Future Work
+## 13. Future Work
 
 ### Version 2 Priorities
-1. **Language expansion** - Add Oromo, Tigrinya, Somali, and Sidama NLP models
-2. **Voice interface improvement** - Retrain Amharic ASR on rural accent data
-3. **Telemedicine integration** - Escalate from AI chat to live video consultation
-4. **Clinical validation** - Randomized controlled trial comparing health outcomes
-5. **Predictive analytics** - Disease outbreak detection from consultation data
-6. **Wearable integration** - Connect with low-cost pulse oximeters and BP monitors
-7. **HEW dedicated app** - Patient management, community health mapping, supply chain
-8. **Full DHIS2 integration** - Live reporting to national health surveillance system
-9. **Federated learning** - Train models on distributed data without centralizing records
-10. **Health equity study** - Measure impact on women, elderly, and people with disabilities
+1. **Real ML/NLP integration** — Replace keyword symptom engine with intent classification + NER
+2. **Language expansion** — Add Somali, Sidama, Afar, Wolaytta, Hadiyya UI support
+3. **Authentication** — Add JWT-based user registration and login
+4. **PostgreSQL / MongoDB** — Production database scaling
+5. **Voice interface improvement** — Server-side ASR for low-resource languages
+6. **Telemedicine integration** — Escalate from AI chat to live video consultation
+7. **Clinical validation** — Randomized controlled trial comparing health outcomes
+8. **Predictive analytics** — ML-based disease outbreak prediction
+9. **Full DHIS2 live integration** — Real-time reporting to national health surveillance
+10. **HEW dedicated mobile app** — Patient management, community health mapping
 
 ### Recommended Pilot Plan
 | Phase | Duration | Activity |
 |---|---|---|
-| Phase 1 | 3 months | Deploy in 5 kebeles in Oromia; 200 users |
+| Phase 1 | 3 months | Deploy in 5 kebeles in amhara; 200 users |
 | Phase 2 | 6 months | Expand to 50 kebeles; add HEW dashboard |
-| Phase 3 | 12 months | Regional scale; add Oromo language; clinical validation |
+| Phase 3 | 12 months | Regional scale; add amharic language models; clinical validation |
 | Phase 4 | 24 months | National scale; DHIS2 live integration; telemedicine |
 
 ---
 
-## 17. References
+## 14. References
 
 ### Standards and Guidelines
 - WHO Primary Care Guidelines (2023)
 - Ethiopian Standard Treatment Guidelines - Federal Ministry of Health
-- HL7 FHIR R4 Specification - hl7.org/fhir
-- DHIS2 API Documentation - docs.dhis2.org
 - ICD-10 Classification - WHO
+- DHIS2 API Documentation - docs.dhis2.org
 
 ### Key Research Papers
 - Esteva et al. (2017). Dermatologist-level classification of skin cancer with deep neural networks. *Nature*, 542, 115-118.
 - Wahl et al. (2018). AI and global health: How can AI contribute in resource-poor settings? *BMJ Global Health*, 3(4).
 - Mekonnen et al. (2019). Mobile health interventions in LMICs: A systematic review. *JMIR*, 21(7).
-- Rajpurkar et al. (2018). Deep learning for chest radiograph diagnosis. *PLOS Medicine*, 15(11).
 
 ### Tools and Libraries
-- Hugging Face Transformers - huggingface.co/docs/transformers
-- scikit-learn - scikit-learn.org
 - Django REST Framework - django-rest-framework.org
+- React - react.dev
+- Leaflet - leafletjs.com
 - Africa's Talking USSD API - africastalking.com/ussd
+
+---
+
+## Project Stats
+
+| Metric | Count |
+|--------|-------|
+| Backend Python files | 62 |
+| Backend lines of code | ~7,976 |
+| Frontend source files | 47 |
+| Frontend lines of code | ~9,022 |
+| Knowledge base (JSON) | 1 file, ~4,060 lines |
+| Django models | 30+ |
+| API endpoints | ~90 |
+| Supported languages | 8+ (partial) |
+| Git commits | 12 |
+| ML models | 0 (rule-based) |
+| Test files | 0 (prototype) |
 
 ---
 
